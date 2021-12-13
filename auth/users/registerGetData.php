@@ -10,7 +10,7 @@ $_POST = json_decode($rest_json, true);
 
 if (!empty($_POST['id_session_account'])) {
     $id_session_account = $_POST['id_session_account'];
-    $query = "SELECT * FROM admins WHERE id_session_account = '$id_session_account'";
+    $query = "SELECT * FROM Account WHERE id_session_account = '$id_session_account'";
 }
 
 $get = pg_query($connect, $query);
