@@ -20,7 +20,7 @@ if (pg_num_rows($get) > 0) {
     while ($row = pg_fetch_assoc($get)) {
         $_SESSION = array(
             "id_session_account" => $id_session_account,
-            "id_admin" => $row["id_admin"],
+            "id_account" => $row["id_account"],
             "name_account" => $row["name_account"],
             "username_account" => $row["username_account"],
             "email_account" => $row["email_account"]
