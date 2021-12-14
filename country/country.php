@@ -10,7 +10,7 @@ $_POST = json_decode($rest_json, true);
 
 if (!empty($_GET['name_iso_phonecode_country'])) {
     $name_iso_phonecode_country = $_GET['name_iso_phonecode_country'];
-    $query = "SELECT Country.name_country, Country.iso3_country, Country.phonecode_country
+    $query = "SELECT Country.id_country, Country.name_country, Country.iso3_country, Country.phonecode_country
         FROM Country WHERE name_country = '$name_iso_phonecode_country' OR iso3_country = '$name_iso_phonecode_country' OR phonecode_country = '$name_iso_phonecode_country'";
 } else {
     $query = "SELECT * FROM Country";

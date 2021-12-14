@@ -47,4 +47,8 @@ ALTER TABLE Account
 ALTER TABLE Contact 
     ADD name_iso_phonecode_country VARCHAR(100);
 
+ALTER TABLE Contact 
+    ADD id_country INTEGER;
+
+
 -- ALTER TABLE FOR FOREIGN KEY
