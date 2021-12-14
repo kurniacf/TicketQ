@@ -13,9 +13,14 @@ CREATE TABLE Account(
     password_account VARCHAR(255)
 );
 
-CREATE TABLE Region (
-    id_region SERIAL PRIMARY KEY,
-    name_region VARCHAR(55)
+CREATE TABLE Country (
+    id_country SERIAL PRIMARY KEY,
+    iso_country CHAR(2),
+    name_capital_country VARCHAR(100),
+    name_country VARCHAR(100),
+    iso3_country CHAR(3),
+    numcode_country VARCHAR(6),
+    phonecode_country VARCHAR(6)
 );
 
 CREATE TABLE Contact (
@@ -31,7 +36,6 @@ CREATE TABLE Customer(
     address_customer VARCHAR(255),
     type_age_customer BOOLEAN,
     gender_customer BOOLEAN,
-
 
 );
 
