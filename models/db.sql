@@ -13,6 +13,9 @@ CREATE TABLE Account(
     password_account VARCHAR(255)
 );
 
+ALTER TABLE Account 
+    ADD id_session_account VARCHAR(255);
+
 CREATE TABLE Country (
     id_country SERIAL PRIMARY KEY,
     iso_country CHAR(2),
@@ -29,6 +32,12 @@ CREATE TABLE Contact (
     telp_contact VARCHAR(12)
 );
 
+ALTER TABLE Contact 
+    ADD id_country INTEGER;
+
+ALTER TABLE Contact
+    ADD FOREIGN KEY (id_country) REFERENCES Country(id_country);
+
 CREATE TABLE Customer(
     id_customer SERIAL PRIMARY KEY,
     firstname_customer VARCHAR(100),
@@ -36,18 +45,12 @@ CREATE TABLE Customer(
     address_customer VARCHAR(255),
     type_age_customer BOOLEAN,
     gender_customer BOOLEAN,
+    nationality_customer VARCHAR(32),
+    id_account INTEGER,
+    id_contact INTEGER,
 
+    FOREIGN KEY (id_account) REFERENCES Account(id_account),
+    FOREIGN KEY (id_contact) REFERENCES Contact(id_contact)
 );
 
 
--- ALTER TABLE FOR ADD COLUMN
-ALTER TABLE Account 
-    ADD id_session_account VARCHAR(255);
-
-ALTER TABLE Contact 
-    ADD id_country INTEGER;
-
-
--- ALTER TABLE FOR FOREIGN KEY
-ALTER TABLE Contact
-    ADD FOREIGN KEY (id_country) REFERENCES Country(id_country);
