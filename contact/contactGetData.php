@@ -26,10 +26,15 @@ if (!empty($_POST['id_country'])) {
     $data1 = pg_fetch_row($get1);
     $id_contact = intval(array_pop($data1));
 
-    $query = "SELECT Contact.id_contact, Contact.id_country, Contact.email_contact, Contact.telp_contact, Country.name_country, Country.iso3_country, Country.phonecode_country 
+    if ($id_contact) {
+        $query = "SELECT Contact.id_contact, Contact.id_country, Contact.email_contact, Contact.telp_contact, Country.name_country, Country.iso3_country, Country.phonecode_country 
         FROM Contact 
         JOIN Country ON Country.id_country = '$id_country'
         WHERE id_contact = $id_contact";
+    } else {
+        http_response_code(401);
+        set_response(false, "Data is Not Found", $data);
+    }
 } else if (!empty($_POST['id_contact'])) {
     $id_contact = $_POST['id_contact'];
 
