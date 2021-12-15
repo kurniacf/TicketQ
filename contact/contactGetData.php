@@ -21,12 +21,14 @@ if (!empty($_POST['id_country'])) {
         $telp_contact = null;
     }
 
-    $query1 = "SELECT id_contact FROM contact WHERE email_contact = '$email_contact' OR telp_contact = '$telp_contact' AND id_country = '$id_country'";
+    $query1 = "SELECT * FROM contact WHERE (email_contact = '$email_contact' OR telp_contact = '$telp_contact') AND id_country = '$id_country'";
     $get1 = pg_query($connect, $query1);
-    $data1 = pg_fetch_row($get1);
-    $id_contact = intval(array_pop($data1));
+    if (pg_num_rows($get1)) {
+        $query1 = "SELECT id_contact FROM contact WHERE (email_contact = '$email_contact' OR telp_contact = '$telp_contact') AND id_country = '$id_country'";
+        $get1 = pg_query($connect, $query1);
+        $data1 = pg_fetch_row($get1);
+        $id_contact = intval(array_pop($data1));
 
-    if ($id_contact) {
         $query = "SELECT Contact.id_contact, Contact.id_country, Contact.email_contact, Contact.telp_contact, Country.name_country, Country.iso3_country, Country.phonecode_country 
         FROM Contact 
         JOIN Country ON Country.id_country = '$id_country'
