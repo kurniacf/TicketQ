@@ -9,7 +9,7 @@ $rest_json = file_get_contents("php://input");
 $_POST = json_decode($rest_json, true);
 
 
-if (!empty($_POST['id_account']) && !empty($_POST['id_contact'])) {
+if (!empty($_POST['id_account']) && !empty($_POST['id_contact']) && !empty($_POST['firstname_customer']) && !empty($_POST['type_age_customer']) && !empty($_POST['gender_customer']) && !empty($_POST['nationality_customer'])) {
     $id_account = $_POST['id_account'];
     $id_contact = $_POST['id_contact'];
     $firstname_customer = $_POST['firstname_customer'];
@@ -23,40 +23,26 @@ if (!empty($_POST['id_account']) && !empty($_POST['id_contact'])) {
     $get = pg_query($connect, $query);
 
     if (pg_num_rows($get)) {
-        $query1 = "SELECT id_contact FROM contact WHERE (email_contact = '$email_contact' OR telp_contact = '$telp_contact') AND id_country = '$id_country'";
-        $get1 = pg_query($connect, $query1);
-        $data1 = pg_fetch_row($get1);
-        $id_contact = intval(array_pop($data1));
-
-        $query = "SELECT * FROM Contact WHERE id_contact = '$id_contact'";
-        $get = pg_query($connect, $query);
-
-        if (pg_num_rows($get)) {
-            $query = "UPDATE Contact set email_contact = '$email_contact', telp_contact = '$telp_contact'
-                WHERE id_country = '$id_country' AND (email_contact = '$email_contact' OR telp_contact = '$telp_contact')";
-            $insert = pg_query($connect, $query);
-        } else {
-            $query = "INSERT INTO Contact(id_country, email_contact, telp_contact) 
-                VALUES ('$id_country', '$email_contact','$telp_contact')";
-            $insert = pg_query($connect, $query);
-        }
-
-        if ($insert) {
-            set_response(true, "Update Contact Success");
-        } else {
-            http_response_code(401);
-            set_response(false, "Update Contact Failed");
-        }
-    } else {
-        $query = "INSERT INTO Customer(id_account, id_contact, firstname_customer, lastname_customer, address_customer, type_age_customer, gender_customer, nationality_customer) 
-            VALUES ('$id_country', '$email_contact','$telp_contact')";
+        $query = "UPDATE Customer set firstname_customer = '$firstname_customer', lastname_customer = '$lastname_customer',  address_customer = '$address_customer',  type_age_customer = '$type_age_customer',  gender_customer = '$gender_customer', nationality_customer = '$nationality_customer'
+                WHERE id_account = '$id_account' AND id_contact = '$id_contact'";
         $insert = pg_query($connect, $query);
 
         if ($insert) {
-            set_response(true, "Input Contact Success");
+            set_response(true, "Update Customer Success");
         } else {
             http_response_code(401);
-            set_response(false, "Input Contact Failed");
+            set_response(false, "Update Customer Failed");
+        }
+    } else {
+        $query = "INSERT INTO Customer(id_account, id_contact, firstname_customer, lastname_customer, address_customer, type_age_customer, gender_customer, nationality_customer) 
+            VALUES ('$id_account', '$id_contact','$firstname_customer', '$lastname_customer', '$address_customer', '$type_age_customer', '$gender_customer', '$nationality_customer',)";
+        $insert = pg_query($connect, $query);
+
+        if ($insert) {
+            set_response(true, "Input Customer Success");
+        } else {
+            http_response_code(401);
+            set_response(false, "Input Customer Failed");
         }
     }
 } else {
