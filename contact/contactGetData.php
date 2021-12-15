@@ -30,7 +30,7 @@ if (!empty($_POST['id_country'])) {
         $query = "SELECT Contact.id_contact, Contact.id_country, Contact.email_contact, Contact.telp_contact, Country.name_country, Country.iso3_country, Country.phonecode_country 
         FROM Contact 
         JOIN Country ON Country.id_country = '$id_country'
-        WHERE id_contact = $id_contact";
+        WHERE id_contact = $id_contact AND (email_contact = '$email_contact' OR telp_contact = '$telp_contact')";
     } else {
         http_response_code(401);
         set_response(false, "Data is Not Found", $data);
