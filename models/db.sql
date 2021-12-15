@@ -45,10 +45,9 @@ ALTER TABLE Account
     ADD id_session_account VARCHAR(255);
 
 ALTER TABLE Contact 
-    ADD name_iso_phonecode_country VARCHAR(100);
-
-ALTER TABLE Contact 
     ADD id_country INTEGER;
 
 
 -- ALTER TABLE FOR FOREIGN KEY
+ALTER TABLE Orders
+    ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);

@@ -43,8 +43,6 @@ if (!empty($_POST['id_country'])) {
             $insert = pg_query($connect, $query);
         }
 
-
-
         if ($insert) {
             set_response(true, "Update Contact Success");
         } else {
