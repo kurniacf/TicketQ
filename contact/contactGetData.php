@@ -20,12 +20,12 @@ if (!empty($_POST['id_country'])) {
     if (!(isset($telp_contact))) {
         $telp_contact = null;
     }
-    $query = "SELECT Contact.id_contact, Contact.id_country, Contact.email_contact, Contact.telp_contact, Country.name_country, Country.iso3_country, Country.phonecode_country 
-        FROM Contact, Country 
-        WHERE (email_contact = '$email_contact' OR telp_contact = '$telp_contact') AND id_country = '$id_country'";
+    $query = "SELECT * FROM Contact WHERE (email_contact = '$email_contact' OR telp_contact = '$telp_contact') AND id_country = '$id_country'";
 } else if (!empty($_POST['id_contact'])) {
     $id_contact = $_POST['id_contact'];
-    $query = "SELECT * FROM Contact WHERE id_contact = '$id_contact'";
+    $query = "SELECT Contact.id_contact, Contact.id_country, Contact.email_contact, Contact.telp_contact, Country.name_country, Country.iso3_country, Country.phonecode_country 
+        FROM Contact, Country 
+        WHERE Contact.id_contact = '$id_contact'";
 } else {
     $query = "SELECT Contact.id_contact, Contact.id_country, Contact.email_contact, Contact.telp_contact, Country.name_country, Country.iso3_country, Country.phonecode_country 
         FROM Contact

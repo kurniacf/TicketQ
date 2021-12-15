@@ -49,5 +49,5 @@ ALTER TABLE Contact
 
 
 -- ALTER TABLE FOR FOREIGN KEY
-ALTER TABLE Orders
-    ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+ALTER TABLE Contact
+    ADD FOREIGN KEY (id_country) REFERENCES Country(id_country);
