@@ -14,8 +14,15 @@ if (!empty($_POST['id_session_account']) && !empty($_POST['id_country'])) {
 
     $query1 = "SELECT email_account FROM Account WHERE id_session_account = '$id_session_account'";
     $get1 = pg_query($connect, $query1);
-    $data1 = pg_fetch_row($get1);
-    $email_account = array_pop($data1);
+
+    if (!(pg_num_rows($get1))) {
+        http_response_code(400);
+        set_response(false, "Data is Not Found", "Session is Wrong!");
+        exit();
+    } else {
+        $data1 = pg_fetch_row($get1);
+        $email_account = array_pop($data1);
+    }
 
     $query = "SELECT Account.id_account, Account.id_session_account, Account.name_account, Account.username_account, Account.email_account,
                     Contact.id_contact, Contact.telp_contact,
@@ -28,14 +35,14 @@ if (!empty($_POST['id_session_account']) && !empty($_POST['id_country'])) {
 $get = pg_query($connect, $query);
 $data = array();
 
-if (pg_num_rows($get) > 0) {
+if (pg_num_rows($get)) {
     while ($row = pg_fetch_assoc($get)) {
         $data[] = $row;
     }
     set_response(true, "Data is Found", $data);
 } else {
     http_response_code(400);
-    set_response(false, "Data is Not Found", "Session is Wrong!");
+    set_response(false, "Data is Not Found", "Id Country is Wrong!");
 }
 
 function set_response($isSuccess, $message, $data)
