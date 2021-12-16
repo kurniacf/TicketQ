@@ -41,11 +41,11 @@ if (!empty($_POST['name_account']) && !empty($_POST['username_account']) && !emp
                 $query = "SELECT id_account FROM Account WHERE email_account = '$email_account'";
                 $get = pg_query($connect, $query);
                 $data = pg_fetch_row($get);
-                $id_admin = intval(array_pop($data));
+                $id_account = intval(array_pop($data));
 
                 $_SESSION = array(
                     "id_session_account" => $id_session_account,
-                    "id_admin" => $id_admin
+                    "id_account" => $id_account
 
                 );
                 set_response(true, "Register Account Success", $_SESSION);
