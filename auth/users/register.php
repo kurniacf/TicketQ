@@ -28,7 +28,7 @@ if (!empty($_POST['name_account']) && !empty($_POST['username_account']) && !emp
         http_response_code(400);
         set_response(false, "Email has Already Account!", "Check Data Again");
     } else {
-        $query = "SELECT * FROM Contact WHERE email_contact = '$email_account' AND telp_contact = '$telp_account' AND id_country = '$id_country'";
+        $query = "SELECT * FROM Contact WHERE email_contact = '$email_account' OR telp_contact = '$telp_account' AND id_country = '$id_country'";
         $get = pg_query($connect, $query);
 
         if (pg_num_rows($get)) {
