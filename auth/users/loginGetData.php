@@ -10,27 +10,45 @@ $_POST = json_decode($rest_json, true);
 
 if (!empty($_POST['id_session_account'])) {
     $id_session_account = $_POST['id_session_account'];
-    $query = "SELECT * FROM Account WHERE id_session_account = '$id_session_account'";
+
+    $query1 = "SELECT email_account FROM Account WHERE id_session_account = '$id_session_account'";
+    $get1 = pg_query($connect, $query1);
+
+    if (!(pg_num_rows($get1))) {
+        http_response_code(400);
+        set_response(false, "Data is Not Found", "Session is Wrong!");
+        exit();
+    } else {
+        $data1 = pg_fetch_row($get1);
+        $email_account = array_pop($data1);
+
+        $query1 = "SELECT id_country FROM Contact WHERE email_contact = '$email_account'";
+        $get1 = pg_query($connect, $query1);
+        $data1 = pg_fetch_row($get1);
+        $id_country = intval(array_pop($data1));
+    }
+
+    $query = "SELECT Account.id_account, Account.id_session_account, Account.name_account, Account.username_account, Account.email_account,
+                    Contact.id_contact, Contact.telp_contact,
+                    Country.id_country, Country.name_country, Country.iso3_country, Country.phonecode_country
+                    FROM Account, Contact
+                    JOIN Country ON Country.id_country = '$id_country'
+                    WHERE Contact.email_contact = '$email_account' AND  Contact.id_country = '$id_country' AND Account.id_session_account = '$id_session_account'";
 }
 
 $get = pg_query($connect, $query);
 $data = array();
 
-if (pg_num_rows($get) > 0) {
+if (pg_num_rows($get)) {
     while ($row = pg_fetch_assoc($get)) {
-        $_SESSION = array(
-            "id_session_account" => $id_session_account,
-            "id_account" => $row["id_account"],
-            "name_account" => $row["name_account"],
-            "username_account" => $row["username_account"],
-            "email_account" => $row["email_account"]
-        );
+        $data[] = $row;
     }
-    set_response(true, "Data is Found", $_SESSION);
+    set_response(true, "Data is Found", $data);
 } else {
     http_response_code(400);
-    set_response(false, "Data is Not Found", "Session is Wrong!");
+    set_response(false, "Data is Not Found", "Id Country is Wrong!");
 }
+
 
 function set_response($isSuccess, $message, $data)
 {
