@@ -33,13 +33,30 @@ if (!empty($_POST['username_email_account']) && !empty($_POST['password_account'
             $data1 = pg_fetch_row($get1);
             $id_account = intval(array_pop($data1));
 
-            $query2 = "UPDATE Account set id_session_account = '$id_session_account' WHERE id_account = '$id_account'";
+            $query2 = "SELECT email_account FROM Account WHERE email_account = '$username_email_account' OR username_account = '$username_email_account'";
             $get2 = pg_query($connect, $query2);
+            $data2 = pg_fetch_row($get2);
+            $email_account = array_pop($data2);
 
-            if (pg_num_rows($get1) > 0) {
+            $query2 = "SELECT id_contact FROM Contact WHERE email_contact = '$email_account'";
+            $get2 = pg_query($connect, $query2);
+            $data2 = pg_fetch_row($get2);
+            $id_contact = intval(array_pop($data2));
+
+            $query2 = "SELECT id_country FROM Contact WHERE email_contact = '$email_account'";
+            $get2 = pg_query($connect, $query2);
+            $data2 = pg_fetch_row($get2);
+            $id_country = intval(array_pop($data2));
+
+            $query3 = "UPDATE Account set id_session_account = '$id_session_account' WHERE id_account = '$id_account'";
+            $update = pg_query($connect, $query3);
+
+            if ($update) {
                 $_SESSION = array(
                     "id_session_account" => $id_session_account,
-                    "id_account" => $id_account
+                    "id_account" => $id_account,
+                    "id_contact" => $id_contact,
+                    "id_country" => $id_country,
                 );
                 set_response(true, "Login Account success", $_SESSION);
             } else {
