@@ -44,7 +44,7 @@ CREATE TABLE Customer(
     lastname_customer VARCHAR(100),
     address_customer VARCHAR(255),
     type_age_customer BOOLEAN,
-    gender_customer BOOLEAN,
+    gender_customer CHAR(1),
     nationality_customer VARCHAR(32),
     id_account INTEGER,
     id_contact INTEGER,
