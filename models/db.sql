@@ -53,4 +53,18 @@ CREATE TABLE Customer(
     FOREIGN KEY (id_contact) REFERENCES Contact(id_contact)
 );
 
+CREATE TABLE Plane (
+    id_plane VARCHAR(4) PRIMARY KEY,
+    capacity_plane INTEGER,
+    company_plane VARCHAR(55),
+    type_plane VARCHAR(55)
+);
+
+CREATE TABLE Routes (
+    id_route VARCHAR(8) PRIMARY KEY,
+    start_city_route VARCHAR(55),
+    destination_city_route VARCHAR(55),
+    start_airport_route VARCHAR(55), 
+    destination_destination_route VARCHAR(55)
+);
 
