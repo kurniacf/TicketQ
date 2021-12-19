@@ -35,6 +35,18 @@ if (!empty($_POST['id_customer'])) {
                     JOIN Customer ON Customer.id_customer = '$id_customer'
                     JOIN Country ON Country.id_country = '$id_country'
                     WHERE Contact.id_contact = '$id_contact' AND  Contact.id_country = '$id_country' AND Account.id_account = '$id_account'";
+} else if (!empty($_POST['id_account'])) {
+    $id_account = $_POST['id_account'];
+
+    $query = "SELECT DISTINCT Customer.id_customer, Customer.firstname_customer, Customer.lastname_customer, Customer.address_customer, Customer.type_age_customer, Customer.gender_customer, Customer.nationality_customer,
+                    Account.id_account, Account.id_session_account, Account.name_account, Account.username_account, Account.email_account,
+                    Contact.id_contact, Contact.email_contact, Contact.telp_contact,
+                    Country.id_country, Country.name_country, Country.iso3_country, Country.phonecode_country
+                    FROM Customer
+					JOIN Contact ON Contact.id_contact = Customer.id_contact
+                    JOIN Country ON Country.id_country = Contact.id_country
+					JOIN Account ON Account.id_account = '$id_account'
+                    WHERE Customer.id_account = '$id_account'";
 } else {
     $query =  "SELECT DISTINCT Customer.id_customer, Customer.firstname_customer, Customer.lastname_customer, Customer.address_customer, Customer.type_age_customer, Customer.gender_customer, Customer.nationality_customer,
                     Account.id_account, Account.id_session_account, Account.name_account, Account.username_account, Account.email_account,
