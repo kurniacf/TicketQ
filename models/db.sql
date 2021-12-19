@@ -62,9 +62,9 @@ CREATE TABLE Plane (
 
 CREATE TABLE Routes (
     id_route VARCHAR(8) PRIMARY KEY,
-    start_city_route VARCHAR(55),
-    destination_city_route VARCHAR(55),
-    start_airport_route VARCHAR(55), 
-    destination_destination_route VARCHAR(55)
+    start_city_route VARCHAR(100),
+    destination_city_route VARCHAR(100),
+    start_airport_route VARCHAR(100), 
+    destination_airport_route VARCHAR(100)
 );
 
