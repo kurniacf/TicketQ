@@ -68,3 +68,15 @@ CREATE TABLE Routes (
     destination_airport_route VARCHAR(100)
 );
 
+CREATE TABLE Schedule (
+    id_schedule VARCHAR(16) PRIMARY KEY,
+    id_plane VARCHAR(4),
+    id_route VARCHAR(8),
+    departure_schedule TIMESTAMP,
+    arrival_schedule TIMESTAMP,
+    available_seat_schedule INTEGER,
+    normal_price_schedule INTEGER,
+
+    FOREIGN KEY (id_plane) REFERENCES Plane(id_plane),
+    FOREIGN KEY (id_route) REFERENCES Routes(id_route)
+);

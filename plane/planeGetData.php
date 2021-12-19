@@ -28,10 +28,10 @@ if (pg_num_rows($get) > 0) {
     while ($row = pg_fetch_assoc($get)) {
         $data[] = $row;
     }
-    set_response(true, "Data Country is Found", $data);
+    set_response(true, "Data Plane is Found", $data);
 } else {
     http_response_code(401);
-    set_response(false, "Data Country is Not Found", $data);
+    set_response(false, "Data Plane is Not Found", $data);
 }
 
 function set_response($isSuccess, $message, $data)
