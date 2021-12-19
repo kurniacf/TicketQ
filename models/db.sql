@@ -80,3 +80,12 @@ CREATE TABLE Schedule (
     FOREIGN KEY (id_plane) REFERENCES Plane(id_plane),
     FOREIGN KEY (id_route) REFERENCES Routes(id_route)
 );
+
+CREATE TABLE Discount (
+    id_route VARCHAR(8) PRIMARY KEY,
+    start_city_route VARCHAR(100),
+    destination_city_route VARCHAR(100),
+    start_airport_route VARCHAR(100), 
+    destination_airport_route VARCHAR(100)
+);
+
