@@ -62,6 +62,7 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_customer'])) {
         $seat_number = 0;
     }
 
+
     if ($available_seat_schedule < $seat_number) {
         http_response_code(400);
         set_response(false, "Seat is Fully", "Sorry, Please Find Schedule!!");
