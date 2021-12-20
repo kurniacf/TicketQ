@@ -95,6 +95,19 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_account'])) {
                     id_discount = null, id_fee = '$id_fee', total_price_transactions = '$total_price_transactions', total_customer_adult = '$total_customer_adult', total_customer_child = '$total_customer_child' 
                     WHERE id_schedule = '$id_schedule' AND id_account = '$id_account'";
             $update = pg_query($connect, $query);
+        } else {
+            $query = "SELECT number_fee FROM Additional_Fee 
+                WHERE id_fee = '$id_fee'";
+            $get = pg_query($connect, $query);
+            $data = pg_fetch_row($get);
+            $number_fee = intval(array_pop($data));
+            $total_price_transactions = $total_price_transactions + ($total_price_transactions * $number_fee / 100);
+            $total_price_transactions = (int)($total_price_transactions);
+
+            $query = "UPDATE Ticketing set 
+                    id_discount = null, id_fee = null, total_price_transactions = '$total_price_transactions', total_customer_adult = '$total_customer_adult', total_customer_child = '$total_customer_child' 
+                    WHERE id_schedule = '$id_schedule' AND id_account = '$id_account'";
+            $update = pg_query($connect, $query);
         }
 
         $query =  "SELECT DISTINCT
@@ -165,6 +178,18 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_account'])) {
 
             $query = "INSERT INTO Ticketing(id_schedule, id_account, id_discount, id_fee, total_price_transactions, total_customer_adult, total_customer_child) 
                 VALUES ('$id_schedule', '$id_account', null, '$id_fee', '$total_price_transactions', '$total_customer_adult', '$total_customer_child')";
+            $insert = pg_query($connect, $query);
+        } else {
+            $query = "SELECT number_fee FROM Additional_Fee 
+                WHERE id_fee = '$id_fee'";
+            $get = pg_query($connect, $query);
+            $data = pg_fetch_row($get);
+            $number_fee = intval(array_pop($data));
+            $total_price_transactions = $total_price_transactions + ($total_price_transactions * $number_fee / 100);
+            $total_price_transactions = (int)($total_price_transactions);
+
+            $query = "INSERT INTO Ticketing(id_schedule, id_account, id_discount, id_fee, total_price_transactions, total_customer_adult, total_customer_child) 
+                VALUES ('$id_schedule', '$id_account', null, null, '$total_price_transactions', '$total_customer_adult', '$total_customer_child')";
             $insert = pg_query($connect, $query);
         }
 
