@@ -82,10 +82,9 @@ CREATE TABLE Schedule (
 );
 
 CREATE TABLE Discount (
-    id_route VARCHAR(8) PRIMARY KEY,
-    start_city_route VARCHAR(100),
-    destination_city_route VARCHAR(100),
-    start_airport_route VARCHAR(100), 
-    destination_airport_route VARCHAR(100)
+    id_discount VARCHAR(4) PRIMARY KEY,
+    title_discount VARCHAR(32),
+    number_discount INTEGER,
+    description_discount TEXT
 );
 
