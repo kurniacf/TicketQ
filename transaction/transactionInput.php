@@ -28,6 +28,36 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_customer'])) {
     $data = pg_fetch_row($get);
     $seat_number = intval(array_pop($data));
 
+    $query = "SELECT normal_price_schedule FROM Schedule WHERE id_schedule = '$id_schedule'";
+    $get = pg_query($connect, $query);
+    $data = pg_fetch_row($get);
+    $normal_price_schedule = intval(array_pop($data));
+
+    $query = "SELECT type_age_customer FROM Customer WHERE id_customer = '$id_customer'";
+    $get = pg_query($connect, $query);
+    $data = pg_fetch_row($get);
+    $type_age_customer = array_pop($data);
+
+    $query = "SELECT id_contact FROM Customer WHERE id_customer = '$id_customer'";
+    $get = pg_query($connect, $query);
+    $data = pg_fetch_row($get);
+    $id_contact = intval(array_pop($data));
+
+    $query = "SELECT id_country FROM Contact WHERE id_contact = '$id_contact'";
+    $get = pg_query($connect, $query);
+    $data = pg_fetch_row($get);
+    $id_country = intval(array_pop($data));
+
+    $query = "SELECT id_route FROM Schedule WHERE id_schedule = '$id_schedule'";
+    $get = pg_query($connect, $query);
+    $data = pg_fetch_row($get);
+    $id_route = array_pop($data);
+
+    $query = "SELECT id_plane FROM Schedule WHERE id_schedule = '$id_schedule'";
+    $get = pg_query($connect, $query);
+    $data = pg_fetch_row($get);
+    $id_plane = array_pop($data);
+
     if (!(isset($seat_number))) {
         $seat_number = 0;
     }
@@ -36,17 +66,6 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_customer'])) {
         http_response_code(400);
         set_response(false, "Seat is Fully", "Sorry, Please Find Schedule!!");
     } else {
-        $seat_number += 1;
-        $query = "SELECT normal_price_schedule FROM Schedule WHERE id_schedule = '$id_schedule'";
-        $get = pg_query($connect, $query);
-        $data = pg_fetch_row($get);
-        $normal_price_schedule = intval(array_pop($data));
-
-        $query = "SELECT type_age_customer FROM Customer WHERE id_customer = '$id_customer'";
-        $get = pg_query($connect, $query);
-        $data = pg_fetch_row($get);
-        $type_age_customer = array_pop($data);
-
         if ($type_age_customer == 'f') {
             $price_transactions = $normal_price_schedule - ($normal_price_schedule * 20 / 100);
             $price_transactions = (int)($price_transactions);
@@ -59,34 +78,28 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_customer'])) {
             $customer_child = 0;
         }
 
-        $query = "INSERT INTO Transactions(id_schedule, id_customer, price_transactions, seat_number, customer_adult, customer_child) 
+        $query = "SELECT * FROM Transactions WHERE id_schedule = '$id_schedule' AND id_customer = '$id_customer'";
+        $get = pg_query($connect, $query);
+
+        if (pg_num_rows($get)) {
+            $query = "SELECT id_transactions FROM Transactions WHERE id_schedule = '$id_schedule' AND id_customer = '$id_customer'";
+            $get = pg_query($connect, $query);
+            $data = pg_fetch_row($get);
+            $id_transactions = intval(array_pop($data));
+
+            http_response_code(400);
+            set_response(false, "Customer & Schedule has been Transaction", "Find again New Schedule or New Customer!");
+        } else {
+            $seat_number += 1;
+            $query = "INSERT INTO Transactions(id_schedule, id_customer, price_transactions, seat_number, customer_adult, customer_child) 
                 VALUES ('$id_schedule', '$id_customer', '$price_transactions', '$seat_number', '$customer_adult', '$customer_child')";
-        $insert = pg_query($connect, $query);
+            $insert = pg_query($connect, $query);
 
-        $query = "SELECT id_transactions FROM Transactions WHERE id_schedule = '$id_schedule' AND id_customer = '$id_customer'";
-        $get = pg_query($connect, $query);
-        $data = pg_fetch_row($get);
-        $id_transactions = intval(array_pop($data));
-
-        $query = "SELECT id_contact FROM Customer WHERE id_customer = '$id_customer'";
-        $get = pg_query($connect, $query);
-        $data = pg_fetch_row($get);
-        $id_contact = intval(array_pop($data));
-
-        $query = "SELECT id_country FROM Contact WHERE id_contact = '$id_contact'";
-        $get = pg_query($connect, $query);
-        $data = pg_fetch_row($get);
-        $id_country = intval(array_pop($data));
-
-        $query = "SELECT id_route FROM Schedule WHERE id_schedule = '$id_schedule'";
-        $get = pg_query($connect, $query);
-        $data = pg_fetch_row($get);
-        $id_route = array_pop($data);
-
-        $query = "SELECT id_plane FROM Schedule WHERE id_schedule = '$id_schedule'";
-        $get = pg_query($connect, $query);
-        $data = pg_fetch_row($get);
-        $id_plane = array_pop($data);
+            $query = "SELECT id_transactions FROM Transactions WHERE id_schedule = '$id_schedule' AND id_customer = '$id_customer'";
+            $get = pg_query($connect, $query);
+            $data = pg_fetch_row($get);
+            $id_transactions = intval(array_pop($data));
+        }
 
         $queryFinal = "SELECT 
                     Transactions.id_transactions, Transactions.booking_date, Transactions.price_transactions, Transactions.seat_number, Transactions.customer_adult, Transactions.customer_child,
@@ -103,7 +116,7 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_customer'])) {
                     JOIN Routes ON Routes.id_route = '$id_route'
                     JOIN Plane ON Plane.id_plane = '$id_plane'
                     JOIN Schedule ON Schedule.id_schedule = '$id_schedule'
-        			JOIN Contact ON Contact.id_contact = '$id_contact'
+                    JOIN Contact ON Contact.id_contact = '$id_contact'
                     WHERE Contact.id_country = '$id_country' AND Account.id_account = '$id_account' AND Transactions.id_transactions = '$id_transactions' AND Schedule.id_route = '$id_route' AND Schedule.id_plane = '$id_plane'";
 
         $getFinal = pg_query($connect, $queryFinal);
