@@ -88,3 +88,10 @@ CREATE TABLE Discount (
     description_discount TEXT
 );
 
+CREATE TABLE Additional_Fee (
+    id_fee VARCHAR(4) PRIMARY KEY,
+    title_fee VARCHAR(32),
+    number_fee INTEGER,
+    description_fee TEXT
+);
+
