@@ -49,16 +49,18 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_customer'])) {
 
         if ($type_age_customer == 'f') {
             $price_transactions = $normal_price_schedule - ($normal_price_schedule * 20 / 100);
+            $price_transactions = (int)($price_transactions);
             $customer_child = 1;
             $customer_adult = 0;
         } else {
             $price_transactions = $normal_price_schedule;
+            $price_transactions = (int)($price_transactions);
             $customer_adult = 1;
             $customer_child = 0;
         }
 
         $query = "INSERT INTO Transactions(id_schedule, id_customer, price_transactions, seat_number, customer_adult, customer_child) 
-                VALUES ('$id_schedule', '$id_customer', '$price_transactions', '$seat_number', '$customer_adult', $customer_child)";
+                VALUES ('$id_schedule', '$id_customer', '$price_transactions', '$seat_number', '$customer_adult', '$customer_child')";
         $insert = pg_query($connect, $query);
 
         $query = "SELECT id_transactions FROM Transactions WHERE id_schedule = '$id_schedule' AND id_customer = '$id_customer'";
@@ -101,7 +103,7 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_customer'])) {
                     JOIN Routes ON Routes.id_route = '$id_route'
                     JOIN Plane ON Plane.id_plane = '$id_plane'
                     JOIN Schedule ON Schedule.id_schedule = '$id_schedule'
-					JOIN Contact ON Contact.id_contact = '$id_contact'
+        			JOIN Contact ON Contact.id_contact = '$id_contact'
                     WHERE Contact.id_country = '$id_country' AND Account.id_account = '$id_account' AND Transactions.id_transactions = '$id_transactions' AND Schedule.id_route = '$id_route' AND Schedule.id_plane = '$id_plane'";
 
         $getFinal = pg_query($connect, $queryFinal);
