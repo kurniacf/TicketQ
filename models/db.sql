@@ -114,3 +114,32 @@ CREATE TABLE Transactions(
     FOREIGN KEY (id_schedule) REFERENCES Schedule(id_schedule)
 );
 
+CREATE TABLE Ticketing(
+    id_ticketing serial PRIMARY KEY,
+    id_transactions INTEGER,
+    id_discount VARCHAR(4),
+    id_fee VARCHAR(4),
+    total_price_transactions INTEGER,
+    total_customer_adult INTEGER,
+    total_customer_child INTEGER,
+
+    FOREIGN KEY (id_transactions) REFERENCES Transactions(id_transactions),
+    FOREIGN KEY (id_discount) REFERENCES Discount(id_discount),
+    FOREIGN KEY (id_fee) REFERENCES Additional_Fee(id_fee)
+);
+
+CREATE TABLE Ticketing(
+    id_ticketing serial PRIMARY KEY,
+    id_schedule VARCHAR(16),
+    id_account INTEGER,
+    id_discount VARCHAR(4),
+    id_fee VARCHAR(4),
+    total_price_transactions INTEGER,
+    total_customer_adult INTEGER,
+    total_customer_child INTEGER,
+
+    FOREIGN KEY (id_schedule) REFERENCES Schedule(id_schedule),
+    FOREIGN KEY (id_account) REFERENCES Account(id_account),
+    FOREIGN KEY (id_discount) REFERENCES Discount(id_discount),
+    FOREIGN KEY (id_fee) REFERENCES Additional_Fee(id_fee)
+);
