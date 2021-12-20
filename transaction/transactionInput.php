@@ -101,9 +101,8 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_customer'])) {
             $get = pg_query($connect, $query);
             $data = pg_fetch_row($get);
             $id_transactions = intval(array_pop($data));
-        }
 
-        $queryFinal = "SELECT 
+            $queryFinal = "SELECT 
                     Transactions.id_transactions, Transactions.booking_date, Transactions.price_transactions, Transactions.seat_number, Transactions.customer_adult, Transactions.customer_child,
                     Customer.id_customer, Customer.firstname_customer, Customer.lastname_customer, Customer.address_customer, Customer.type_age_customer, Customer.gender_customer, Customer.nationality_customer,
                     Account.id_account, Account.id_session_account, Account.name_account, Account.username_account, Account.email_account,
@@ -121,17 +120,18 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_customer'])) {
                     JOIN Contact ON Contact.id_contact = '$id_contact'
                     WHERE Contact.id_country = '$id_country' AND Account.id_account = '$id_account' AND Transactions.id_transactions = '$id_transactions' AND Schedule.id_route = '$id_route' AND Schedule.id_plane = '$id_plane'";
 
-        $getFinal = pg_query($connect, $queryFinal);
-        $data = array();
+            $getFinal = pg_query($connect, $queryFinal);
+            $data = array();
 
-        if (pg_num_rows($getFinal)) {
-            while ($row = pg_fetch_assoc($getFinal)) {
-                $data[] = $row;
+            if (pg_num_rows($getFinal)) {
+                while ($row = pg_fetch_assoc($getFinal)) {
+                    $data[] = $row;
+                }
+                set_response(true, "Transactions Success", $data);
+            } else {
+                http_response_code(400);
+                set_response(false, "Transactions Failed", "Input Data is Wrong!");
             }
-            set_response(true, "Transactions Success", $data);
-        } else {
-            http_response_code(400);
-            set_response(false, "Transactions Failed", "Input Data is Wrong!");
         }
     }
 } else {
