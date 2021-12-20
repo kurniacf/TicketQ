@@ -28,7 +28,7 @@ if (!empty($_POST['id_schedule']) && !empty($_POST['id_account'])) {
                     JOIN Schedule ON Schedule.id_schedule = '$id_schedule'
                     JOIN Plane ON Plane.id_plane = Schedule.id_plane
                     JOIN Routes ON Routes.id_route = Schedule.id_route
-                    WHERE Transactions.id_schedule = '$id_schedule' AND Customer.id_account = '$id_account''
+                    WHERE Transactions.id_schedule = '$id_schedule' AND Customer.id_account = '$id_account'
                     ";
 } else if (!empty($_POST['id_schedule']) && !empty($_POST['id_customer'])) {
     $id_schedule = $_POST['id_schedule'];
