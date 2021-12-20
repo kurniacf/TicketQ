@@ -95,3 +95,22 @@ CREATE TABLE Additional_Fee (
     description_fee TEXT
 );
 
+CREATE TABLE Cek_Transactions(
+    id_customer INTEGER PRIMARY KEY,
+    id_transactions INTEGER PRIMARY KEY
+);
+
+CREATE TABLE Transactions(
+    id_transactions serial PRIMARY KEY,
+    id_customer INTEGER,
+    id_schedule VARCHAR(16),
+    booking_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    price_transactions INTEGER,
+    seat_number INTEGER,
+    customer_adult INTEGER,
+    customer_child INTEGER,
+
+    FOREIGN KEY (id_customer) REFERENCES Customer(id_customer),
+    FOREIGN KEY (id_schedule) REFERENCES Schedule(id_schedule)
+);
+
